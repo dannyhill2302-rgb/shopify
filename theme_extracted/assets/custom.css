@@ -1,0 +1,162 @@
+/*
+
+Please add any custom CSS code in here, it will be easier to transfer if updating themes.
+
+We highly recommend labelling changes, or App installs, so these can also be updated or removed as needed.
+
+*/
+
+.footer-payment svg {
+  width: 60px;
+  height: 37px;
+}
+
+@media (max-width: 920px) {
+  .footer-lower {
+    display: flex;
+    flex-direction: column-reverse;
+    padding-right: 24px;
+    padding-left: 24px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+  }
+
+  .footer-payment {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+[data-product-swatch-quantity="0"] {
+  pointer-events: none;
+  color: black;
+  background-color: var(--border-color);
+  opacity: 0.3;
+}
+
+.byPop-shopify-submit-wrapper .button {
+  background-color: var(--sale-color);
+  color: white;
+  font-weight: bold;
+}
+
+.breadcrumbs-inner {
+  padding: 0.5em 0;
+}
+
+.product-type-vendor {
+  margin-top: 0.25em;
+}
+
+.product-price {
+  margin-top: 0.5em;
+}
+
+.product-page__policies {
+  opacity: 0.7;
+}
+
+.product-page__policies p {
+  margin: 0;
+}
+
+.product-page__policies p:last-child {
+  margin-top: 0.5em;
+}
+
+/* In the future, this could be: .product-title--wrapper:has(+ .product-description) */
+.product-title--wrapper {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+@media (min-width: 720px) {
+  .breadcrumbs-inner {
+    padding: 1em 0;
+  }
+
+  .product-page__policies p:last-child {
+    margin-top: 1em;
+  }
+
+  .form-field.product-quantity,
+  .form-field.product-stock {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .product-stock-level {
+    margin-top: 12px;
+  }
+}
+
+@media (min-width: 720px) {
+  #product-media {
+    height: 100%;
+  }
+
+  .product-details {
+    margin-left: 50%;
+  }
+}
+
+.product-images {
+  height: 100%;
+  position: relative !important;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.product-images .carousel-image {
+  display: flex;
+  width: 100%;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+.product-images img {
+  flex-shrink: 0;
+  width: 100%;
+  cursor: default !important;
+}
+
+@media (min-width: 600px) {
+  .product-images {
+    position: absolute !important;
+    flex-direction: column;
+    overflow-x: none;
+    overflow-y: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .product-images .carousel-image {
+    scroll-snap-align: start;
+    height: auto;
+  }
+}
+
+.button.button.update {
+  background-color: #ffffff!important;
+  border: 1px solid #333333!important;
+  width: 100%;
+  margin-right: 0px!important;
+}
+
+.button.button.hover-animation.checkout {
+  background-color: #ef0a81!important;
+  width: 100%;
+  margin: 12px 0 0 0;
+  padding: 24px;
+}
+
+.update span.button-text {
+  text-transform: uppercase!important;
+  color: #333333!important;
+  margin: 0;
+}

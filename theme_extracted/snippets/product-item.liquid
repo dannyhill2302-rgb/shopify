@@ -1,0 +1,139 @@
+{% assign items = "" %}
+{% assign itemsAvailability = "" %}
+{% assign colorsAvailability = false %}
+{% assign hasAdditionalInfo = false %}
+
+{% if settings.show_second_image_on_hover == true %}
+  {%- assign secondary_image_enabled = true -%}
+{% endif %}
+
+{% if productInfoSetting and productInfoSetting == 'show-on-hover' %}
+  {% assign hasAdditionalInfo = true %}
+{% endif %}
+
+{% assign isColor = false %}
+{% assign delayAmount = '' %}
+
+<article
+  class="product-item {{ grid }}"
+  data-product-item="{{ item.options_with_values | json | escape }}"
+  data-product-item-type="{{ item.type | escape }}"
+  data-product-item-brand="{{ item.vendor | escape }}"
+  data-aos-duration="600"
+  data-aos-delay="{{ delayAmount }}"
+  data-aos="fade-up"
+  data-aos-easing="capital-easing"
+>
+  <div class="product-item__wrapper">
+    {% capture banner_compiled %}
+      {% render "product-badges", item: item, collection: collection %}
+    {% endcapture %}
+
+    {% if template == 'collection' %}
+      {% assign image_link = item.url | within: collection %}
+    {% else %}
+      {% assign image_link = item.url %}
+    {% endif %}
+
+    {% assign image_default = item.featured_image | img_url: image_default_width %}
+
+    {% assign image_secondary = false %}
+
+    {% if item.media.size > 1 and settings.show_second_image_on_hover == true %}
+      {% assign image_secondary = item.media[1].preview_image  %}
+    {% endif %}
+
+    {% if hasAdditionalInfo %}
+      {% assign image_secondary = false %}
+    {% endif %}
+
+    {% if item.media.size > 0 %}
+      <div class="product-item__image-wrapper">
+        {%
+          render 'image',
+          secondary_image_enabled: secondary_image_enabled,
+          image_object: item.featured_media,
+          image_secondary_object: image_secondary,
+          image_widths: '340, 440, 680, 880, 1020, 1320',
+          image_noscript_width: '220x',
+          image_class: 'product-item-image',
+          image_link: image_link,
+          image_tabindex: '-1',
+          image_additional_content: banner_compiled,
+          image_default: image_default,
+          image_link_class: false,
+          image_attributes: false
+        %}
+      </div>
+    {% else %}
+      <a href=”{{ product.url }}” class=”product-grid-item”>
+    {% endif %}
+
+    <div class="product-item-details {{ productInfoSetting }}">
+
+      {% assign collectionHandle = 'all' %}
+      {% if collection.url %}
+        {% assign collectionHandle = collection.handle %}
+      {% endif %}
+
+      {% assign vendorLink = false %}
+
+      {% if isSearch and settings.predictive_search_show_vendor %}
+        {% assign vendorLink = item.vendor | link_to_vendor %}
+      {% elsif settings.productBrand %}
+        {% if settings.productItemVendorCollection %}
+          {% capture url %}/collections/{{ collectionHandle }}/{{ item.vendor | handle }}{% endcapture %}
+          {% assign vendorLink = item.vendor | link_to: url %}
+        {% else %}
+          {% assign vendorLink = item.vendor | link_to_vendor %}
+        {% endif %}
+      {% endif %}
+
+      {% if vendorLink %}
+        <span class="product-item-brand">{{ vendorLink }}</span>
+      {% endif %}
+
+      <h3 class="product--item-title">
+        <a href="{{ item.url | within: collection }}">{{ item.title }}</a>
+      </h3>
+
+      {% if settings.show_reviews %}
+        <a class="product-item__reviews" href="{{ item.url | within: collection }}">
+          <span class="shopify-product-reviews-badge" data-id="{{ item.id }}"></span>
+        </a>
+      {% endif %}
+
+      <div class="product-item-price">
+      {% if isSearch != true or settings.predictive_search_show_price %}
+        {% render "product-item-price", item: item %}
+      {% endif %}
+      </div>
+
+      {% if colorsAvailability %}
+        <ul class="product-item-colors">
+          {% for colorItem in colorsAvailability %}
+            {% assign colorParts = colorItem | split: "/" %}
+            {% assign isAvailable = colorParts | last %}
+            {% assign colorName = colorParts | first %}
+
+            {% render 'color-override', value: colorName %}
+            <li
+              class="{% if isAvailable == 'false' %}soldout{% endif %}"
+              style="background-color: {{ color | escape }}"
+              data-color="{{ colorName | escape }}">
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% for cartItem in cart.items %}
+        {% if cartItem.product_id == item.id %}
+          <a class="product-item-in-cart" href="{{ routes.cart_url }}">{{ "products.product.in_cart" | t }}</a>
+          {% break %}
+        {% endif %}
+      {% endfor %}
+
+    </div>
+  </div>
+
+</article>

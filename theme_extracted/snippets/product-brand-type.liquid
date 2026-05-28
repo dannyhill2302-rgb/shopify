@@ -1,0 +1,26 @@
+{% assign hasType = false %}
+{% assign hasBrand = false %}
+{% if section.settings.productType and product.type != blank %}
+  {% assign hasType = true %}
+{% endif %}
+{% if settings.productBrand and product.vendor != blank %}
+  {% assign hasBrand = true %}
+{% endif %}
+
+{% capture vendorLink %}{{ product.vendor | link_to_vendor }}{% endcapture %}
+
+{% if hasType or hasBrand %}
+  <div class="product-type-vendor" id="product-brand">
+    {% if hasBrand %}
+      {% render 'helper-vendor-link', collection: collection, settings: settings, item: product %}
+    {% endif %}
+
+    {% if hasType and hasBrand %}
+      {{ "products.general.type_vendor_html" | t: type: product.type, vendor: vendorLink }}
+    {% elsif hasType %}
+      {{ product.type }}
+    {% elsif hasBrand %}
+      {{ vendorLink }}
+    {% endif %}
+  </div>
+{% endif %}

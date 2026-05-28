@@ -1,0 +1,67 @@
+{% if settings.popupEnable %}
+  <div class="popup-container{% if settings.popupImage != blank %} has-image{% endif %}" id="popup" aria-hidden="true" data-popup-time="{{ settings.popupTime }}" data-popup-delay="{{ settings.popupDelay }}" data-popup-test-mode="{{ settings.popupTestMode }}">
+    <div class="popup-outer" tabindex="-1">
+      <div class="popup-inner"role="dialog" aria-modal="true" aria-labelledby="popup-title" >
+        <button type="button" class="popup-inner__btn" aria-label="Close popup" data-micromodal-close>
+          <svg><use xlink:href="#icon-close"></use></svg>
+        </button>
+
+        <div class="popup-inner__text-wrapper">
+          {% if settings.popupHeading != blank %}
+            <h2 class="popup-heading" id="popup-title">{{ settings.popupHeading }}</h2>
+          {% endif %}
+
+          {% if settings.popupText != blank %}
+            <div class="popup-text">{{ settings.popupText }}</div>
+          {% endif %}
+
+          {% if settings.popupShowNewsletter %}
+            <div class="popup-form">
+              {% form "customer" %}         
+                <div class="form-errors">
+                  {{ form.errors | default_errors }}
+                </div>
+            
+                {% if form.posted_successfully? %}
+                  <p class="form-success">{{ 'password.mailing_list.success' | t }}</p>
+                {% else %}
+            
+                  <div class="form-field">
+                      <input type="hidden" name="contact[tags]" value="" data-mailing-list-tags>
+            
+                    <label class="form-label" for="mailing-list-email" aria-label="{{ 'modules.mailing_list.email' | t }}">
+                      <input class="form-input form-full" type="email" name="contact[email]" id="mailing-list-email" placeholder="{{ 'modules.mailing_list.email' | t }}" value="{{ customer.email }}" required>
+                    </label>
+                  </div>
+            
+                  <div class="form-actions">
+                    <input class="button" type="submit" value="{{ 'modules.mailing_list.join' | t }}" aria-label="{{ 'modules.mailing_list.join' | t }}">
+                  </div>
+                {% endif %}         
+              {% endform %}
+            </div>
+          {% endif %}
+
+          {% if settings.popupShowSocial %}
+            {% render 'social', settings: settings %}
+          {% endif %}
+        </div>
+
+        {% if settings.popupImage != blank %}
+          <div class="popup-inner__image-wrapper">
+            {%
+              render 'image-bg',
+              image: settings.popupImage,
+              image_class: 'popup-image',
+              image_default: false,
+              image_sizes: false,
+              image_additional_content: false,
+              image_dimension: false,
+              image_link: false
+            %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
