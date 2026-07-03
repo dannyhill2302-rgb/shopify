@@ -167,8 +167,8 @@ def merge_sources(gsc_weekly: pd.DataFrame, ga4_weekly: pd.DataFrame) -> pd.Data
     ga4_weekly["iso_week"] = ga4_weekly["week_label"].apply(
         lambda w: w if len(w) == 6 else f"20{w}")   # normalise GA4 yearWeek
     merged = gsc_weekly.merge(ga4_weekly.drop(columns=["week_label"]), on="iso_week", how="left")
-    merged["bounce_rate"]   = merged["bounce_rate"].fillna(method="ffill")
-    merged["avg_session_s"] = merged["avg_session_s"].fillna(method="ffill")
+    merged["bounce_rate"]   = merged["bounce_rate"].ffill()
+    merged["avg_session_s"] = merged["avg_session_s"].ffill()
     return merged.drop(columns=["iso_week"])
 
 # ── Sample data fallback ──────────────────────────────────────────────────────
